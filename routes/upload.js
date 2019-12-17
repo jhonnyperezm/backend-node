@@ -59,11 +59,11 @@ app.put('/:tipo/:id', (req, res, next) => {
 
     // Nombre de archivo personalizado
     // 12312312312-123.png
-    var nombreArchivo = `${ id }-${ new Date().getMilliseconds() }.${ extensionArchivo }`;
+    var nombreArchivo = `${id}-${new Date().getMilliseconds()}.${extensionArchivo}`;
 
 
     // Mover el archivo del temporal a un path
-    var path = `./uploads/${ tipo }/${ nombreArchivo }`;
+    var path = `./uploads/${tipo}/${nombreArchivo}`;
 
     archivo.mv(path, err => {
 
@@ -160,7 +160,7 @@ function subirPorTipo(tipo, id, nombreArchivo, res) {
                 return res.status(200).json({
                     ok: true,
                     mensaje: 'Imagen de médico actualizada',
-                    usuario: medicoActualizado
+                    medico: medicoActualizado
                 });
 
             })
@@ -183,8 +183,9 @@ function subirPorTipo(tipo, id, nombreArchivo, res) {
             var pathViejo = './uploads/hospitales/' + hospital.img;
 
             // Si existe, elimina la imagen anterior
-            if (fs.existsSync(pathViejo)) {
-                fs.unlink(pathViejo);
+            if (fs.existsSync(pathViejo) &&
+                medico.img.length > 0) {
+                fs.unlinkSync(pathViejo);
             }
 
             hospital.img = nombreArchivo;
@@ -194,7 +195,7 @@ function subirPorTipo(tipo, id, nombreArchivo, res) {
                 return res.status(200).json({
                     ok: true,
                     mensaje: 'Imagen de hospital actualizada',
-                    usuario: hospitalActualizado
+                    hospital: hospitalActualizado
                 });
 
             })
